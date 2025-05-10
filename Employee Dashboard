@@ -1,0 +1,72 @@
+php
+<?php
+session_start();
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    header('Location: login.php');
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camp Rock Employee Dashboard</title>
+  <style>
+    /* CSS for improved accessibility and user experience */
+  </style>
+</head>
+<body>
+<header>
+  <h1>Camp Rock Employee Dashboard</h1>
+  <form method="POST" action="logout.php">
+    <button type="submit">Logout</button>
+  </form>
+</header>
+<table>
+  <thead>
+    <tr>
+      <th>Employee ID</th>
+      <th>Name</th>
+      <th>Birth Date</th>
+      <th>Hire Date</th>
+      <th>Department</th>
+      <th>Title</th>
+      <th>Salary</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach ($employees as $emp): ?>
+    <tr>
+      <td><?= htmlspecialchars($emp['emp_no']) ?></td>
+      <td><?= htmlspecialchars($emp['first_name'] . ' ' . $emp['last_name']) ?></td>
+      <td><?= htmlspecialchars($emp['birth_date']) ?></td>
+      <td><?= htmlspecialchars($emp['hire_date']) ?></td>
+      <td><?= htmlspecialchars($emp['dept_name']) ?></td>
+      <td><?= htmlspecialchars($emp['title_name']) ?></td>
+      <td>$<?= number_format($emp['salary'], 2) ?></td>
+      <td>
+        <form action="update_department.php" method="GET">
+          <input type="hidden" name="emp_no" value="<?= $emp['emp_no'] ?>">
+          <button type="submit">Dept</button>
+        </form>
+        <form action="update_title.php" method="GET">
+          <input type="hidden" name="emp_no" value="<?= $emp['emp_no'] ?>">
+          <button type="submit">Title</button>
+        </form>
+        <form action="update_salary.php" method="GET">
+          <input type="hidden" name="emp_no" value="<?= $emp['emp_no'] ?>">
+          <button type="submit">Salary</button>
+        </form>
+        <form action="fire_employee.php" method="POST" onsubmit="return confirm('Are you sure you want to fire this employee?');">
+          <input type="hidden" name="emp_no" value="<?= $emp['emp_no'] ?>">
+          <button type="submit" class="fire-btn">Fire</button>
+        </form>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+</body>
+</html>
