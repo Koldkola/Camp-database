@@ -1,0 +1,12 @@
+php
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $emp_no = $_POST['emp_no'];
+    $query = "DELETE FROM employees WHERE emp_no = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('i', $emp_no);
+    $stmt->execute();
+    header('Location: employee_dashboard.php');
+    exit;
+}
+?>
