@@ -1,0 +1,14 @@
+php
+<?php
+// Example: Fetch departments and handle update
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $emp_no = $_POST['emp_no'];
+    $new_department_id = $_POST['department_id'];
+    $query = "UPDATE employees SET department_id = ? WHERE emp_no = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('ii', $new_department_id, $emp_no);
+    $stmt->execute();
+    header('Location: employee_dashboard.php');
+    exit;
+}
+
