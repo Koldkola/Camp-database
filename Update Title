@@ -1,0 +1,12 @@
+php
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $emp_no = $_POST['emp_no'];
+    $new_title_id = $_POST['title_id'];
+    $query = "UPDATE employees SET title_id = ? WHERE emp_no = ?";
+    $stmt = $db->prepare($query);
+    $stmt->bind_param('ii', $new_title_id, $emp_no);
+    $stmt->execute();
+    header('Location: employee_dashboard.php');
+    exit;
+}
